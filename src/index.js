@@ -4,7 +4,8 @@ import './index.css';
 import { ThemeProvider } from "@material-tailwind/react";
 import { NotificationProvider } from "@web3uikit/core";
 import { MoralisProvider } from "react-moralis";
-import App from './App';
+import { Idiomas } from './00_Router/Idiomas';
+
 
 
 
@@ -19,7 +20,7 @@ root.render(
     <MoralisProvider appId={APP_ID} serverUrl={SERVER_URL}>
       <NotificationProvider>
         <ThemeProvider>
-          <App />
+          <Idiomas />
         </ThemeProvider>
       </NotificationProvider>
     </MoralisProvider>
