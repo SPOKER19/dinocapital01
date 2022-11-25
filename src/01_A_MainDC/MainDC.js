@@ -17,6 +17,7 @@ import { SeccObtDataBDDUser } from './A02Layer01/SeccObtDataBDDUser';
 import { TextMain } from './A02Layer01/TextMain';
 import { NabVarFinance } from './A06Finance/NabVarFinance';
 import { A01ValorVariables } from './A07ValorVariables/A01ValorVariables';
+import { InformacionReferidos } from './A06Finance/InformacionReferidos';
 
 
 
@@ -48,7 +49,12 @@ export const MainDC = (props) => {
 
     const [ totalUsuariosRegistrados, setTotalUsuariosRegistrados ] = useState(0);
     const [ misReferidosBDD, setMisReferidosBDD ] = useState(0);
+    const [ dataMisReferidosBDD, setDataMisReferidosBDD ] = useState(null);
 
+
+    const mostrarMensjCopiado = () => {         
+        CompFxGlobales.fxMostrarAlerta('success', "Link Referido", "Copiado.....");
+    }
     
     const fxValidIdSponsorURLBDD = useCallback(async () => { 
         setValidarLoadingParamURL(true);
@@ -112,14 +118,17 @@ export const MainDC = (props) => {
 
     const fxObtenerMisReferidosUsuActual = useCallback(async (usuarioActual) => {    // 
         const query = new Moralis.Query("dataUser");        
-        query.equalTo("idSponsor", usuarioActual);       
+        query.equalTo("idSponsor", usuarioActual);
         await query.find()
         .then(function(receipt){ 
             if(receipt.length === 0){
-                //console.log('No tiene Referidos', receipt);    
+                //console.log('No tiene Referidos', receipt);   
+                //setPost(list.sort((a,b) => b.tipAmount - a.tipAmount)); 
+                setDataMisReferidosBDD(receipt); 
                 setMisReferidosBDD(receipt.length);        
             }else{                 
                 //console.log('Estos son sus Referidos', receipt);
+                setDataMisReferidosBDD(receipt);
                 setMisReferidosBDD(receipt.length);
             }             
         })
@@ -177,6 +186,7 @@ export const MainDC = (props) => {
         setMostrarBoolUsernameBDD(false);
         setMostrarSeccBoolButtonRegistrar(false);   
         setBoolAccesoAPublicidad(false);   
+        setDataMisReferidosBDD(null);
     }, [idSponsorURL]); 
 
 
@@ -245,6 +255,7 @@ export const MainDC = (props) => {
                                                                 />                                                                 
                                                             </div>
                                                         :   <C2SeccIdSponsor    userActual = { props.userActual }
+                                                                                langSelected = {props.langSelected}
                                                                                 URLMainOrigin = { props.URLMainOrigin }
                                                                                 nombreIdSponsorARegistrar = { nombreIdSponsorARegistrar }
                                                                                 setNombreIdSponsorARegistrar = { setNombreIdSponsorARegistrar }
@@ -440,9 +451,17 @@ export const MainDC = (props) => {
                 </div>
                 
                 {(boolAccesoAPublicidad)
-                    ?   <NabVarFinance  totalUsuariosRegistrados = { totalUsuariosRegistrados }
-                                        misReferidosBDD = { misReferidosBDD }
-                        />
+                    ?   <div className='my-5'>
+                            <NabVarFinance  totalUsuariosRegistrados = { totalUsuariosRegistrados }
+                                            misReferidosBDD = { misReferidosBDD }
+                            />
+                            <div className='my-5'>
+                                <InformacionReferidos   userActual = { props.userActual }
+                                                        mostrarMensjCopiado = { mostrarMensjCopiado }
+                                                        dataMisReferidosBDD = { dataMisReferidosBDD }
+                                />
+                            </div>
+                        </div>
                     :   ""
                 }
                

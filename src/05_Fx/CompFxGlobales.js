@@ -3,6 +3,19 @@ import {create, all, subtract, add } from 'mathjs'
 import moment from 'moment';
 import Swal from "sweetalert2";
 
+import BandEEUU from '../03_Imagenes/Banderas/101_Bandera_EEUU_1.png';
+import BandChin from '../03_Imagenes/Banderas/102_Bandera_China_1.png';
+import BandRus from '../03_Imagenes/Banderas/103_Bandera_Rusia_1.png';
+import BandSpanish from '../03_Imagenes/Banderas/104_Bandera_Spanish_1.png';
+import BandAlemania from '../03_Imagenes/Banderas/105_Bandera_Alemania.png';
+import BandCroatia from '../03_Imagenes/Banderas/106_Bandera_Croacia.png';
+import BandIndia from '../03_Imagenes/Banderas/107_Bandera_India.png';
+import BandEmiArabes from '../03_Imagenes/Banderas/108_Bandera_Emiratos_Arabes.png';
+import BandFrancia from '../03_Imagenes/Banderas/109_Bandera_Francia.png';
+import BandItalia from '../03_Imagenes/Banderas/110_Bandera_Italia.png';
+import BandIrlanda from '../03_Imagenes/Banderas/111_Bandera_Irlanda.png';
+import BandPortugal from '../03_Imagenes/Banderas/112_Bandera_Portugal.png';
+
 const config = {
     // Default type of number
     // Available options: 'number' (default), 'BigNumber', or 'Fraction'
@@ -90,6 +103,11 @@ export const fxTransfUnixADateYMD = (_dateUNIX) => {
     return  FechaFormatDate;       
 }
 
+export const fxTransfDateYMDaUnix= (_DateYMD) => {        
+    var utcSegundos = Math.round(_DateYMD.getTime() / 1000);
+    return  utcSegundos;       
+}
+
 //******************************************************************************** */
 /* ----  MANEJOR DE PALABRAS ----- */
 
@@ -169,3 +187,65 @@ export const fxMostrarAlerta = (icon, title, text) => {
 
 //******************************************************************************** */
 /* ----   ----- */
+
+export function fxObtenerBanderaIdiomaSelect (_lenguajeSelect) {
+    let rutaImagenSRC = '';
+        if(_lenguajeSelect === "en"){ //#01
+            rutaImagenSRC = BandEEUU;            
+            return rutaImagenSRC;
+        }
+        else if(_lenguajeSelect === "zh"){ //#02
+            rutaImagenSRC = BandChin;            
+            return rutaImagenSRC;
+        }
+        else if(_lenguajeSelect === "ru"){ //#03
+            rutaImagenSRC = BandRus;            
+            return rutaImagenSRC;
+        }
+        else if(_lenguajeSelect === "es"){  //#04
+            rutaImagenSRC = BandSpanish;            
+            return rutaImagenSRC;
+        }
+        else if(_lenguajeSelect === "de"){  //#05
+            rutaImagenSRC = BandAlemania;            
+            return rutaImagenSRC;
+        }
+        else if(_lenguajeSelect === "hr"){  //#06
+            rutaImagenSRC = BandCroatia;            
+            return rutaImagenSRC;
+        }
+        else if(_lenguajeSelect === "hi"){  //#07
+            rutaImagenSRC = BandIndia;            
+            return rutaImagenSRC;
+        }
+        else if(_lenguajeSelect === "ar"){  //#08
+            rutaImagenSRC = BandEmiArabes;            
+            return rutaImagenSRC;
+        }
+        else if(_lenguajeSelect === "fr-CH"){  //#09
+            rutaImagenSRC = BandFrancia;            
+            return rutaImagenSRC;
+        }
+        else if(_lenguajeSelect === "it-CH"){  //#10
+            rutaImagenSRC = BandItalia;            
+            return rutaImagenSRC;
+        }
+        else if(_lenguajeSelect === "ga-IE"){  //#11
+            rutaImagenSRC = BandIrlanda;            
+            return rutaImagenSRC;
+        }
+        else if(_lenguajeSelect === "pt-BR"){  //#12
+            rutaImagenSRC = BandPortugal;              
+            return rutaImagenSRC;
+        }
+        else{
+            rutaImagenSRC = ''; 
+            return rutaImagenSRC;
+        }     
+        
+} 
+
+//******************************************************************************** */
+/* ----   ----- */
+
+

@@ -125,7 +125,8 @@ export const C2SeccIdSponsor = (props) => {
             newUsuario.set("usernameDU", props.userNameNew); 
             newUsuario.set("idUserConnect", props.userActual.attributes.username); 
             newUsuario.set("idSponsor", props.nombreIdSponsorARegistrar);
-            newUsuario.set("addressIdConnect", props.userActual.attributes.ethAddress);          
+            newUsuario.set("addressIdConnect", props.userActual.attributes.ethAddress); 
+            newUsuario.set("Idioma_Orig", props.langSelected);           
             await newUsuario.save() 
             .then(function(receipt){ 
                 fxCambiarDataUSER(); 
