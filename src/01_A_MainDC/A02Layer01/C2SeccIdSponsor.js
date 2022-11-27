@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 import { useMoralis } from 'react-moralis';
 import { Button, Label, Spinner, TextInput } from 'flowbite-react';
 import * as CompFxGlobales  from '../../05_Fx/CompFxGlobales';
@@ -55,7 +56,7 @@ export const C2SeccIdSponsor = (props) => {
         await query.first()
         .then(function(receipt){ 
             if(receipt === null || receipt === undefined ){
-                CompFxGlobales.fxMostrarAlerta("info", "IDSPONSOR NO EXISTE", "Introduzca un ID SPONSOR VALIDO");                          
+                CompFxGlobales.fxMostrarAlerta("info", "IDSPONSOR NO EXISTE / Sponsor ID does not exist", "Introduzca un ID SPONSOR VALIDO / Enter a valid ID sponsor");                          
                 props.setBoolSpinningOIngreseIdSponsorInput(false); 
                 props.setBoolMostrarOModfIdSponsor(false);
                 props.setBoolTamInputIdSponsor8Let(false);
@@ -84,7 +85,7 @@ export const C2SeccIdSponsor = (props) => {
                 props.setBoolBotonValidarUser(false);
                 props.setMostrarSeccBoolButtonRegistrar(true);               
             }else{                 
-                CompFxGlobales.fxMostrarAlerta("info", "USUARIO YA EXISTE", "El Username que desea ya esta Registrado");
+                CompFxGlobales.fxMostrarAlerta("info", "USUARIO YA EXISTE / User already exists", "El Username que desea ya esta Registrado / The user you want is already registered");
                 props.setBoolSpinningOIngreseNewUsernameInput(false);
                 props.setMostrarBoolUsernameBDD(false);
                 props.setBoolBotonValidarUser(false);
@@ -130,7 +131,7 @@ export const C2SeccIdSponsor = (props) => {
             await newUsuario.save() 
             .then(function(receipt){ 
                 fxCambiarDataUSER(); 
-                    CompFxGlobales.fxMostrarAlerta("success", "Usuario Creado", "El Usuario Fue Creado Exitosamente");                    
+                    CompFxGlobales.fxMostrarAlerta("success", "Usuario Creado / Created user", "El Usuario Fue Creado Exitosamente / The user was created successfully");                    
                     props.setValidarLoadingParamURL(false);
                 return newUsuario;                
             })
@@ -169,7 +170,7 @@ export const C2SeccIdSponsor = (props) => {
                     <div className='flex flex-row items-center justify-center w-full text-center'>
                         <div className='flex items-center justify-center flex-1'>
                             <span className='text-sm font-semibold text-gray-900 xs:text-base'>
-                                VAMOS A REGISTRARNOS
+                                <FormattedMessage id="VAMOS A REGISTRARNOS" />                                
                             </span>
                         </div>
                         <button className="p-1 mt-2 text-2xl font-light text-red-600"                                
@@ -186,7 +187,8 @@ export const C2SeccIdSponsor = (props) => {
                             >
                                 <div className='flex flex-col items-center justify-center w-full text-center h-1/2'>
                                     <span className='text-xs font-semibold text-gray-700 xs:text-sm'>
-                                        Este es el ID de tu Patrocinador
+                                        <FormattedMessage id="Este es el ID de tu Patrocinador" /> 
+                                        {/* Este es el ID de tu Patrocinador */}
                                     </span>
                                 </div>
                                 <div className='flex flex-row items-center justify-center w-full h-full'>
@@ -205,7 +207,8 @@ export const C2SeccIdSponsor = (props) => {
                                         </div>
                                         <div className='flex flex-col items-center justify-center w-full text-center bg-green-500 h-1/2'>
                                             <span className='text-xs font-semibold text-gray-900'>
-                                                Patrocinador Existe
+                                                <FormattedMessage id="Patrocinador Existe" />
+                                                {/* Patrocinador Existe */}
                                             </span>
                                         </div>                                                                  
                                     </div>
@@ -220,7 +223,8 @@ export const C2SeccIdSponsor = (props) => {
                                 {(props.boolMostrarOModfIdSponsor)
                                     ?   <div className='flex flex-col items-center justify-center w-full border-2 xs:flex-row'>
                                             <div className="flex flex-col items-center justify-center text-xs w-full px-0.5 py-2 bg-lime-800 text-gray-900">
-                                                Id Spondor a Registrar
+                                                <FormattedMessage id="Id Spondor a Registrar" />
+                                                {/* Id Spondor a Registrar */}
                                             </div>
                                             <div className="flex flex-col items-center justify-center w-full p-2 text-gray-200 bg-teal-900">
                                                 {props.nombreIdSponsorARegistrar}
@@ -239,7 +243,7 @@ export const C2SeccIdSponsor = (props) => {
                                                 <div className="block mb-1 font-bold text-center">
                                                     <Label
                                                         htmlFor="idsponsor"
-                                                        value="Ingrese el Id de su Patrocinador"
+                                                        value="Ingrese el Id de su Patrocinador / Sponsor ID to register"
                                                     />
                                                 </div>
                                                 <div className='flex flex-row items-center justify-center bg-white'>
@@ -247,7 +251,7 @@ export const C2SeccIdSponsor = (props) => {
                                                         <TextInput
                                                             id="idSponsor1"
                                                             type="text"                                             
-                                                            placeholder="Debe contener 8 caracteres"
+                                                            placeholder="It must contain 8 characters"
                                                             required={true}
                                                             maxLength={8} 
                                                             addon="@"                                                       
@@ -280,7 +284,8 @@ export const C2SeccIdSponsor = (props) => {
                                             disabled={isAuthenticating} 
                                             onClick={fxSeccEsMiPatrocinadorURL}
                                     >
-                                        Es mi Patrocinador
+                                        <FormattedMessage id="Es mi Patrocinador" />
+                                        {/* Es mi Patrocinador */}
                                     </button>
                                 </div> 
                                 <div className="flex flex-col items-center justify-center w-full">
@@ -288,7 +293,8 @@ export const C2SeccIdSponsor = (props) => {
                                             disabled={isAuthenticating} 
                                             onClick={fxSeccModfIdSponsor}
                                     >
-                                        Cambiar Patrocinador
+                                        <FormattedMessage id="Cambiar Patrocinador" />
+                                        {/* Cambiar Patrocinador */}
                                     </button>
                                 </div>
                             </div>
@@ -303,7 +309,8 @@ export const C2SeccIdSponsor = (props) => {
                             {(props.mostrarBoolUsernameBDD)
                                 ?   <div className='flex flex-col items-center justify-center w-full border-2 xs:flex-row'>
                                         <div className="flex flex-col items-center justify-center text-xs w-full px-0.5 py-2 bg-lime-800 text-gray-900">
-                                            UserName a Registrar
+                                            <FormattedMessage id="UserName a Registrar" />
+                                            {/* UserName a Registrar */}
                                         </div>
                                         <div className="flex flex-col items-center justify-center w-full p-2 text-gray-200 bg-teal-900">
                                             {props.userNameNew}
@@ -322,7 +329,7 @@ export const C2SeccIdSponsor = (props) => {
                                             <div className="block mb-1 font-bold">
                                                 <Label
                                                 htmlFor="username"
-                                                value="Ingrese Username"
+                                                value="Ingrese Username / Enter user"
                                                 />
                                             </div>
                                             <div className='flex flex-row items-center justify-center bg-white'>
@@ -330,7 +337,7 @@ export const C2SeccIdSponsor = (props) => {
                                                     <TextInput
                                                         id="username"
                                                         type="text"                                             
-                                                        placeholder="Debe contener 8 caracteres"
+                                                        placeholder="It must contain 8 characters"
                                                         required={true}
                                                         maxLength={8} 
                                                         addon="@"                                                       
@@ -359,7 +366,7 @@ export const C2SeccIdSponsor = (props) => {
                             <button     className='flex flex-col items-center justify-center px-3 py-2 text-white bg-blue-700 rounded-lg item hover:bg-blue-500 hover:text-gray-900 hover:font-bold'
                                         onClick={fxRegistrarNewUserDU}
                             >
-                                REGISTRAR
+                                <FormattedMessage id="REGISTRAR" />
                             </button>                            
                         </div>
                     :    ""

@@ -7,6 +7,7 @@ import { MainDC } from '../01_A_MainDC/MainDC';
 import { A01WithePaper } from "../01_B_WhitePaper/A01WithePaper"
 import { Error404 } from '../06_Componentes/PagesError404.js/Error404';
 import { A01Footer } from '../01_Z_Footer/A01Footer';
+import { A02Footer2 } from '../01_Z_Footer/A02Footer2';
 
 
 
@@ -125,7 +126,7 @@ export const RoutesMain = (props) => {
                 </Routes>  
 
                 <A01Footer />
-
+                <A02Footer2 />
             </div>         
         </BrowserRouter>              
 

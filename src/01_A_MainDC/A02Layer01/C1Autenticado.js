@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 
 const identicon = require('identicon');
 
@@ -19,7 +20,9 @@ export const C1Autenticado = (props) => {
                 <figure className="relative flex flex-col items-center justify-center w-full p-3 text-center rounded-lg bg-gradient-to-b from-lime-800 to-teal-400">
                     
                     <blockquote className="py-3 mx-auto text-gray-800">                            
-                        <p className="mt-2 font-light">Bienvenido:</p>
+                        <p className="mt-2 font-light">
+                            <FormattedMessage id="Bienvenido" />
+                        </p>
                     </blockquote>
                     <figcaption className="flex items-center justify-center mb-5 space-x-3">                        
                         <img    src={bufferUsername} 
@@ -39,7 +42,9 @@ export const C1Autenticado = (props) => {
                     
                     
                     <blockquote className="py-4 mx-auto mb-1 text-gray-800">                            
-                        <p className="mt-2 font-light">El ID de su Patrocinador es:</p>
+                        <p className="mt-2 font-light">
+                            <FormattedMessage id="El ID de su Patrocinador es:" />                        
+                        </p>
                     </blockquote>
                     <figcaption className="flex items-center justify-center mb-5 space-x-3">                        
                         <img    src={bufferIdSponsor} 

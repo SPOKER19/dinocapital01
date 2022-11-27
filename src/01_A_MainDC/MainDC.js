@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
+import { FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import LogoDC from '../03_Imagenes/Logo/LogoDino-013.png';
 import ImgNoConect01 from "../03_Imagenes/Publicidad/004_DinoBaby01.png";
@@ -16,8 +17,8 @@ import { FondoMain } from './A02Layer01/FondoMain';
 import { SeccObtDataBDDUser } from './A02Layer01/SeccObtDataBDDUser';
 import { TextMain } from './A02Layer01/TextMain';
 import { NabVarFinance } from './A06Finance/NabVarFinance';
-import { A01ValorVariables } from './A07ValorVariables/A01ValorVariables';
 import { InformacionReferidos } from './A06Finance/InformacionReferidos';
+// import { A01ValorVariables } from './A07ValorVariables/A01ValorVariables';
 
 
 
@@ -47,10 +48,11 @@ export const MainDC = (props) => {
     /* * */ const [ mostrarSeccBoolButtonRegistrar, setMostrarSeccBoolButtonRegistrar ] = useState(false); // Para Mostrar el Boton para Registrar New Usuario
     //*********************************************************************************** */
 
+    const [ totalDataUsuariosRegistrados, setTotaDatalUsuariosRegistrados ] = useState(null);
     const [ totalUsuariosRegistrados, setTotalUsuariosRegistrados ] = useState(0);
     const [ misReferidosBDD, setMisReferidosBDD ] = useState(0);
     const [ dataMisReferidosBDD, setDataMisReferidosBDD ] = useState(null);
-
+    const [ arrayConMejoresPatrocinadores, setArrayConMejoresPatrocinadores ] = useState(null);
 
     const mostrarMensjCopiado = () => {         
         CompFxGlobales.fxMostrarAlerta('success', "Link Referido", "Copiado.....");
@@ -85,10 +87,13 @@ export const MainDC = (props) => {
         .then(function(receipt){             
             if(receipt.length === 0 ){
                 //console.log('No se encontraron USUARIOS REGISTRADOS');  
+                setTotaDatalUsuariosRegistrados(receipt);
                 setTotalUsuariosRegistrados(receipt.length);  
             }else{                
                 //console.log("USUARIOS REGISTRADOS = ", receipt.length);  
-                setTotalUsuariosRegistrados(receipt.length);                            
+                setTotaDatalUsuariosRegistrados(receipt);
+                setTotalUsuariosRegistrados(receipt.length); 
+                /* fxMostrarMejoresPatrocinadores(receipt)    */                        
             }           
         })
         .catch(function(error){
@@ -97,6 +102,33 @@ export const MainDC = (props) => {
     }, [Moralis.Query]); 
 
     
+    const fxMostrarMejoresPatrocinadores = useCallback(async () => {         
+        if(totalDataUsuariosRegistrados){
+          const respuesta =  totalDataUsuariosRegistrados
+          .map(item => item.attributes.idSponsor)
+           // console.log(respuesta.sort())
+          //AQUI VIENE LA MAGIA CON REDUCE ==> Tenemos nuestro Acumulador que sera un Objeto
+          // la Primera Variable sera el Acumulador == OBJ
+          // La segunda Variable sera la variable que estamos iterando o preguntando en este caso sera idSponsor
+          // Luego colocamos los valores de array function => {}
+          // OJO = Nuestro estado inicial no sera CERO con en otros ejercicios sino sera UN OBJETO VACIO {}
+          // Ahora lo que hariamos es una pregunta sencilla SI En el Objeto que estamos iterando la Clave idSponsor existe
+          // Si existe lo que hacemos es decirle que sume su actual valor mas 1
+          .reduce((obj, item) => {
+            if(obj[item]){
+                obj[item] = obj[item] + 1;
+            }else{
+                obj[item] = 1;
+            }
+            return obj;
+          }, []) 
+         /* console.log(respuesta)  */ 
+         setArrayConMejoresPatrocinadores(respuesta);
+        }else{}
+        
+    }, [totalDataUsuariosRegistrados]); 
+
+        
     const fxValidateAndConnect = () => {                
         login();
         fxObtenerTotalUsuariosRegistrados();
@@ -141,7 +173,7 @@ export const MainDC = (props) => {
     const fxContarUsernameIdConnet = useCallback(async () => { // 
         if(props.userActual){  
             //setBoolAccesoAPublicidad(true);  //Cambiado el Martes 18-10         
-            let longitudUsername = props.userActual.attributes.username.length;  
+            let longitudUsername = await (props.userActual && props.userActual.attributes.username.length) || "";  
              if(longitudUsername === 8){
                 //console.log("USERNAME VALIDO");
                 setBoolAccesoAPublicidad(true); 
@@ -185,8 +217,12 @@ export const MainDC = (props) => {
         setBoolSpinningOIngreseNewUsernameInput(false);
         setMostrarBoolUsernameBDD(false);
         setMostrarSeccBoolButtonRegistrar(false);   
-        setBoolAccesoAPublicidad(false);   
+        setBoolAccesoAPublicidad(false); 
+        setTotaDatalUsuariosRegistrados(null);
+        setTotalUsuariosRegistrados(0);
+        setMisReferidosBDD(0);
         setDataMisReferidosBDD(null);
+        setArrayConMejoresPatrocinadores([]);
     }, [idSponsorURL]); 
 
 
@@ -196,9 +232,11 @@ export const MainDC = (props) => {
     }, [fxValidIdSponsorURLBDD, fxObtenerTotalUsuariosRegistrados]);
     
 
-    useEffect(() => {  
-        fxContarUsernameIdConnet();
-    }, [fxContarUsernameIdConnet]);
+    useEffect(() => { 
+        if(props.userActual){   
+            fxContarUsernameIdConnet();
+        }else{}
+    }, [fxContarUsernameIdConnet, props.userActual]);
 
     useEffect(() => {  
         if(props.userActual){
@@ -208,6 +246,15 @@ export const MainDC = (props) => {
              fxResetVariables();
         }
      }, [props.userActual, fxResetVariables]);
+
+     useEffect(() => {  
+        if(props.userActual && totalDataUsuariosRegistrados !== 0){
+             //console.log("*** props.userActual EXISTE = ");
+             fxMostrarMejoresPatrocinadores();
+        }else{
+            //console.log("*** props.userActual NO EXISTE = ");            
+        }
+     }, [totalDataUsuariosRegistrados, fxMostrarMejoresPatrocinadores, props.userActual]);
 
        
 
@@ -236,7 +283,7 @@ export const MainDC = (props) => {
                                 {(boolValidarLoadingParamURL === true || isAuthenticating === true)
                                     ?   <div className='flex flex-col items-center justify-center w-full p-2 bg-lime-700 h-96'>
                                             <div className='font-bold text-blue-gray-800'>
-                                                Por Favor Espere......
+                                                <FormattedMessage id="Por Favor Espere......" />                                                
                                             </div>
                                             <Spinner
                                                 aria-label="Extra large spinner example"
@@ -459,6 +506,9 @@ export const MainDC = (props) => {
                                 <InformacionReferidos   userActual = { props.userActual }
                                                         mostrarMensjCopiado = { mostrarMensjCopiado }
                                                         dataMisReferidosBDD = { dataMisReferidosBDD }
+                                                        totalDataUsuariosRegistrados = { totalDataUsuariosRegistrados }
+                                                        arrayConMejoresPatrocinadores = { arrayConMejoresPatrocinadores }
+                                                        fxMostrarMejoresPatrocinadores = { fxMostrarMejoresPatrocinadores }
                                 />
                             </div>
                         </div>
@@ -466,7 +516,7 @@ export const MainDC = (props) => {
                 }
                
                 
-                <A01ValorVariables  langSelected = {props.langSelected}                                                                    
+                {/* <A01ValorVariables  langSelected = {props.langSelected}                                                                    
                                     windowWidth = { props.windowWidth } 
                                     trueFalseTamanoMD = { props.trueFalseTamanoMD }                                                                    
                                     tamPantalla = { props.tamPantalla } 
@@ -492,7 +542,7 @@ export const MainDC = (props) => {
                                     boolAccesoAPublicidad = { boolAccesoAPublicidad }
                                     //
                                                                                
-                />
+                /> */}
                 
             </div>
     )
