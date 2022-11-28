@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import LogoDC from '../03_Imagenes/Logo/LogoDino-013.png';
 import ImgNoConect01 from "../03_Imagenes/Publicidad/004_DinoBaby01.png";
 import ImgNoConect02 from "../03_Imagenes/Publicidad/005_DinoBaby02.png";
@@ -132,6 +132,7 @@ export const MainDC = (props) => {
     const fxValidateAndConnect = () => {                
         login();
         fxObtenerTotalUsuariosRegistrados();
+        fxValidIdSponsorURLBDD(); //LO PUSE
     };
 
     const login = async () => {
@@ -228,15 +229,18 @@ export const MainDC = (props) => {
 
     useEffect(() => {  
         fxValidIdSponsorURLBDD();
-        fxObtenerTotalUsuariosRegistrados();
+        fxObtenerTotalUsuariosRegistrados();        
     }, [fxValidIdSponsorURLBDD, fxObtenerTotalUsuariosRegistrados]);
     
 
     useEffect(() => { 
         if(props.userActual){   
             fxContarUsernameIdConnet();
-        }else{}
-    }, [fxContarUsernameIdConnet, props.userActual]);
+            fxValidIdSponsorURLBDD(); //LO PUSE
+        }else{
+            fxValidIdSponsorURLBDD(); //LO PUSE
+        }
+    }, [fxContarUsernameIdConnet, props.userActual, fxValidIdSponsorURLBDD]); //LO PUSE
 
     useEffect(() => {  
         if(props.userActual){
@@ -355,18 +359,20 @@ export const MainDC = (props) => {
                                             </div>
                                         :   <div className='flex flex-col items-center justify-center w-full p-2 space-y-5 bg-gradient-to-tr from-light-green-700 to-deep-orange-900 h-96'>
                                                 <span className='text-sm font-bold text-gray-900'>
-                                                    Error en URL
+                                                    Error de Carga
                                                 </span>
-                                                <span className='text-sm font-bold text-gray-900'>
-                                                    Revise su URL 
-                                                </span>
+                                                <Link   to={'/'} 
+                                                        className="px-5 py-2 font-bold text-black bg-green-300"
+                                                >
+                                                    Reload...
+                                                </Link>
                                                 <span className='text-sm font-bold text-gray-900'>
                                                     ó Ingrese directamente a:
                                                 </span>                                                    
                                                 <button className='text-xs cursor-pointer text-deep-purple-900 hover:text-blue-700'
                                                         onClick={CompFxGlobales.fxRedirectPagPrincipal}
                                                 >   
-                                                    www.localhost3000 
+                                                    https://dinoc01.netlify.app/
                                                 </button>
                                             </div>
                                 }

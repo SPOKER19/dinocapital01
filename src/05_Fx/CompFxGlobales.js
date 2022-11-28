@@ -86,7 +86,7 @@ export function getNameNetWorkID (_NetWorkId) {
 /* ----  FX REDIRECCIONAMIENTO A PAGINA PRINCIPAL  ----- */
 
 export const fxRedirectPagPrincipal = () => {       
-    window.open('http://localhost:3000/')
+    window.open('https://dinoc01.netlify.app/')
 }
 
 //******************************************************************************** */

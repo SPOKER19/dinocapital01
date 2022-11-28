@@ -42,7 +42,7 @@ export const RoutesMain = (props) => {
     useEffect(() => {  
         if(window.location){
                 let URLMain = new URL(window.location);
-                //console.log("URLMain = ", URLMain.origin);   
+                console.log("URLMain = ", URLMain.origin);   
                 setURLMainOrigin(URLMain.origin);         
         }else{
              //console.log("*** NO EXISTE window.location");
